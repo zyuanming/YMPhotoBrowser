@@ -82,6 +82,7 @@ class Photo: PhotoViewable {
             if error != nil {
                 completion(nil, error)
             } else if let image = image {
+                ImageCache.default.store(image, forKey: url.cacheKey)
                 completion(image, nil)
             } else {
                 completion(nil, NSError(domain: "PhotoDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Couldn't load image"]))
