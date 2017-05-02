@@ -6,7 +6,8 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
     var startingView: UIView?
     var endingView: UIView?
     var photo: PhotoViewable?
-    
+    var bottomInset: CGFloat = 0
+
     var animationDurationWithZooming = 0.3
     var animationDurationWithoutZooming = 0.3
     var animationDurationFadeRatio = 4.0 / 9.0 {
@@ -25,29 +26,29 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
         }
     }
     var zoomingAnimationSpringDamping = 1
-    
+
     var shouldPerformZoomingAnimation: Bool {
         get {
             return self.startingView != nil && self.endingView != nil
         }
     }
-    
+
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         if shouldPerformZoomingAnimation {
             return animationDurationWithZooming
         }
         return animationDurationWithoutZooming
     }
-    
+
     func fadeDurationForTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) -> TimeInterval {
         if shouldPerformZoomingAnimation {
             return transitionDuration(using: transitionContext) * animationDurationFadeRatio
         }
         return transitionDuration(using: transitionContext)
     }
-    
+
     // MARK:- UIViewControllerAnimatedTransitioning
-    
+
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         setupTransitionContainerHierarchyWithTransitionContext(transitionContext)
 
@@ -60,31 +61,31 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
         }
         performFadeAnimationWithTransitionContext(transitionContext)
     }
-    
+
     func setupTransitionContainerHierarchyWithTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) {
-        
+
         if let toView = transitionContext.view(forKey: UITransitionContextViewKey.to),
-           let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
+            let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
             toView.frame = transitionContext.finalFrame(for: toViewController)
             let containerView = transitionContext.containerView
-            
+
             if !toView.isDescendant(of: containerView) {
                 containerView.addSubview(toView)
             }
         }
-        
+
         if dismissing {
             if let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from) {
                 transitionContext.containerView.bringSubview(toFront: fromView)
             }
         }
     }
-    
+
     func performFadeAnimationWithTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) {
         let fadeView = dismissing ? transitionContext.view(forKey: UITransitionContextViewKey.from) : transitionContext.view(forKey: UITransitionContextViewKey.to)
         let beginningAlpha: CGFloat = dismissing ? 1.0 : 0.0
         let endingAlpha: CGFloat = dismissing ? 0.0 : 1.0
-        
+
         fadeView?.alpha = beginningAlpha
 
         UIView.animate(withDuration: fadeDurationForTransitionContext(transitionContext), animations: { () -> Void in
@@ -123,11 +124,10 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
             self.completeTransitionWithTransitionContext(transitionContext)
         }
 
-        return
     }
-    
+
     func performZoomingAnimationWithTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) {
-        
+
         let containerView = transitionContext.containerView
         guard let startingView = startingView, let endingView = endingView else {
             return
@@ -165,7 +165,9 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
                 imageView.image = cropped
             }
 
-            imageView.frame = startingView.convert(startingView.bounds, to: containerView)
+            var originFrame = startingView.convert(startingView.bounds, to: containerView)
+            originFrame.size.height = min(originFrame.height, UIScreen.main.bounds.height)
+            imageView.frame = originFrame
             finalFrame = endingView.convert(endingView.bounds, to: containerView)
             finalFrame.size.height = min(endingView.frame.height, UIScreen.main.bounds.height)
         } else {
@@ -173,6 +175,8 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
             finalFrame = endingView.convert(endingView.bounds, to: containerView)
             imageView.frame = startingView.convert(startingView.bounds, to: containerView)
         }
+
+        finalFrame.origin.y = max(finalFrame.origin.y - bottomInset / 2.0, 0)
 
         containerView.addSubview(imageView)
         endingView.alpha = 0.0
@@ -183,10 +187,10 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
             endingView.alpha = 1.0
             self.completeTransitionWithTransitionContext(transitionContext)
         }
-        
+
         return
     }
-    
+
     func completeTransitionWithTransitionContext(_ transitionContext: UIViewControllerContextTransitioning) {
         if transitionContext.isInteractive {
             if transitionContext.transitionWasCancelled {
@@ -202,7 +206,7 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
 
     fileprivate func isLongPhoto(for imageSize: CGSize) -> Bool {
         let realHeight = UIScreen.main.bounds.width * CGFloat(imageSize.height) / CGFloat(imageSize.width)
-
+        
         return realHeight >= UIScreen.main.bounds.height
     }
 }

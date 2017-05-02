@@ -28,10 +28,6 @@ class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
         setupImageScrollView()
     }
     
-    override func didAddSubview(_ subview: UIView) {
-        super.didAddSubview(subview)
-    }
-
     private func setupImageScrollView() {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
