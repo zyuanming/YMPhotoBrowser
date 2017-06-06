@@ -4,7 +4,7 @@ import UIKit
 
 class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
     lazy var imageView: UIImageView = {
-        let imageView = UIImageView(frame: self.bounds)
+        let imageView = UIImageView()
         imageView.layer.shadowColor = UIColor.black.cgColor
         imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
         imageView.layer.shadowOpacity = 1

@@ -152,13 +152,23 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        let screenBounds = UIScreen.main.bounds
+        var endingViewFrame = endingView.frame
+        if endingView.frame.equalTo(CGRect.zero) {
+            endingViewFrame = screenBounds
+        }
+        if endingView.frame.equalTo(CGRect.zero) {
+            finalFrame = getFinalFrame(animatingImage)
+        } else {
+            finalFrame = endingView.convert(endingView.bounds, to: containerView)
+        }
 
         if let animatingImage = animatingImage,
             isLongPhoto(for: CGSize(width: animatingImage.size.width, height: animatingImage.size.height)) {
 
             let imageSize = animatingImage.size
 
-            let cropHeight = min(UIScreen.main.bounds.height, endingView.bounds.height) / endingView.bounds.width * imageSize.width
+            let cropHeight = min(screenBounds.height, endingViewFrame.height) / endingViewFrame.width * imageSize.width
             let cropRect = CGRect(x: 0, y: 0, width: imageSize.width, height: cropHeight)
             if let imageRef: CGImage = animatingImage.cgImage?.cropping(to: cropRect) {
                 let cropped: UIImage = UIImage(cgImage:imageRef)
@@ -166,13 +176,17 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
             }
 
             var originFrame = startingView.convert(startingView.bounds, to: containerView)
-            originFrame.size.height = min(originFrame.height, UIScreen.main.bounds.height)
+            originFrame.size.height = min(originFrame.height, screenBounds.height)
             imageView.frame = originFrame
-            finalFrame = endingView.convert(endingView.bounds, to: containerView)
-            finalFrame.size.height = min(endingView.frame.height, UIScreen.main.bounds.height)
+
+            if endingView.frame.height > 0 && endingView.frame.height < screenBounds.height {
+                finalFrame.size.height = endingView.frame.height
+            } else {
+                finalFrame.size.height = screenBounds.height
+            }
+
         } else {
             imageView.image = animatingImage
-            finalFrame = endingView.convert(endingView.bounds, to: containerView)
             imageView.frame = startingView.convert(startingView.bounds, to: containerView)
         }
 
@@ -204,9 +218,26 @@ class PhotosTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
 
 
 
-    fileprivate func isLongPhoto(for imageSize: CGSize) -> Bool {
+    private func isLongPhoto(for imageSize: CGSize) -> Bool {
         let realHeight = UIScreen.main.bounds.width * CGFloat(imageSize.height) / CGFloat(imageSize.width)
         
         return realHeight >= UIScreen.main.bounds.height
+    }
+
+    private func getFinalFrame(_ image: UIImage?) -> CGRect {
+        var frame = CGRect.zero
+        if let size = image?.size {
+            var realSize = size
+            let screenBounds = UIScreen.main.bounds
+            let imageWidth = screenBounds.width
+            realSize.width = imageWidth
+            realSize.height = ceil(imageWidth * size.height / size.width)
+
+            frame = CGRect(x: (screenBounds.width - realSize.width) / 2.0,
+                           y: realSize.height > screenBounds.height ? 0 : (screenBounds.height - realSize.height) / 2.0,
+                           width: realSize.width, height: realSize.height)
+        }
+
+        return frame
     }
 }
