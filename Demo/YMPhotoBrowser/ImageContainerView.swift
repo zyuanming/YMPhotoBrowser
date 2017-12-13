@@ -33,7 +33,7 @@ class ImageContainerView: UIView {
         if medias.count > 0 {
             containerHeight = minHeight
             for (i, media) in medias.enumerated() {
-                if let url = URL(string: media.thumbnail) {
+                if URL(string: media.thumbnail) != nil {
                     if i == 4 {
                         break
                     }
@@ -147,7 +147,7 @@ class ImageContainerView: UIView {
         view.addGestureRecognizer(tagGesture)
     }
 
-    func previewFeed(_ gesture: UITapGestureRecognizer) {
+    @objc func previewFeed(_ gesture: UITapGestureRecognizer) {
         if let feedModel = feedModel,
             let feedImageView = gesture.view, feedModel.medias.count > 0 {
 

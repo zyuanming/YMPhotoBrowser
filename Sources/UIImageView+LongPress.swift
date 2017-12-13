@@ -9,7 +9,7 @@ extension UIImageView {
         self.addGestureRecognizer(longPressGest)
     }
 
-    func longPress(_ gesture: UILongPressGestureRecognizer) {
+    @objc func longPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began, let savingImage = image else { return }
 
         let alert = UIAlertController(title: nil, message: "Save Photo", preferredStyle: .actionSheet)
@@ -35,14 +35,15 @@ extension UIImageView {
         controller?.present(alert, animated: true, completion: nil)
     }
 
-    func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             let ac = UIAlertController(title: "Photo Save Fail!!", message: error.localizedDescription, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             UIApplication.shared.keyWindow?.rootViewController?.present(ac, animated: true)
         } else {
-            let alert = UIAlertView(title: "", message: "Photo Saved", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
+            let ac = UIAlertController(title: "", message: "Photo Saved", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            UIApplication.shared.keyWindow?.rootViewController?.present(ac, animated: true)
         }
     }
 }

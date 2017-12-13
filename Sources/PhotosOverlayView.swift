@@ -19,7 +19,7 @@ class PhotosOverlayView: UIView {
             navigationItem.rightBarButtonItem = rightBarButtonItem
         }
     }
-    var titleTextAttributes: [String : AnyObject] = [:] {
+    var titleTextAttributes: [NSAttributedStringKey : Any] = [:] {
         didSet {
             navigationBar.titleTextAttributes = titleTextAttributes
         }
@@ -71,8 +71,8 @@ class PhotosOverlayView: UIView {
                 let indexString = "\(index+1)/\(photosViewController.dataSource.numberOfPhotos)"
                 let title = NSAttributedString(string: indexString,
                                                attributes: [
-                                                NSFontAttributeName: UIFont.systemFont(ofSize: 15),
-                                                NSForegroundColorAttributeName: UIColor.white])
+                                                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15),
+                                                NSAttributedStringKey.foregroundColor: UIColor.white])
                 closeButton?.setAttributedTitle(title, for: .normal)
             }
         }

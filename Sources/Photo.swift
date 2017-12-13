@@ -57,13 +57,11 @@ class Photo: PhotoViewable {
 
         let imageCache = ImageCache.default
         var cachedImage: UIImage?
-        let result = imageCache.isImageCached(forKey: url.cacheKey)
-        if result.cached == true {
-            if result.cacheType == .memory {
-                cachedImage = imageCache.retrieveImageInMemoryCache(forKey: url.cacheKey)
-            } else if result.cacheType == .disk {
-                cachedImage = imageCache.retrieveImageInDiskCache(forKey: url.cacheKey)
-            }
+        let cacheType = imageCache.imageCachedType(forKey: url.cacheKey)
+        if cacheType == .memory {
+            cachedImage = imageCache.retrieveImageInMemoryCache(forKey: url.cacheKey)
+        } else if cacheType == .disk {
+            cachedImage = imageCache.retrieveImageInDiskCache(forKey: url.cacheKey)
         }
 
         return cachedImage
@@ -72,7 +70,7 @@ class Photo: PhotoViewable {
     func hasCachedImage(_ url: URL?) -> Bool {
         guard let url = url else { return false }
 
-        return ImageCache.default.isImageCached(forKey: url.cacheKey).cached
+        return ImageCache.default.imageCachedType(forKey: url.cacheKey).cached
     }
 
     func loadImageWithURL(_ url: URL?, completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
