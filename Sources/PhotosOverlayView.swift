@@ -3,32 +3,22 @@
 import UIKit
 
 class PhotosOverlayView: UIView {
-    private(set) var navigationBar: UINavigationBar!
-    private var closeButton: UIButton?
-    private(set) var navigationItem: UINavigationItem!
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "photo_dismiss"), for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 21)
+        button.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     weak var photosViewController: PhotosViewController?
     private var currentPhoto: PhotoViewable?
 
-    var leftBarButtonItem: UIBarButtonItem? {
-        didSet {
-            navigationItem.leftBarButtonItem = leftBarButtonItem
-        }
-    }
-    var rightBarButtonItem: UIBarButtonItem? {
-        didSet {
-            navigationItem.rightBarButtonItem = rightBarButtonItem
-        }
-    }
-    var titleTextAttributes: [NSAttributedStringKey : Any] = [:] {
-        didSet {
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupNavigationBar()
-        setupCaptionLabel()
+        
+        setUpCloseButton()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +63,7 @@ class PhotosOverlayView: UIView {
                                                attributes: [
                                                 NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15),
                                                 NSAttributedStringKey.foregroundColor: UIColor.white])
-                closeButton?.setAttributedTitle(title, for: .normal)
+                closeButton.setAttributedTitle(title, for: .normal)
             }
         }
     }
@@ -81,36 +71,15 @@ class PhotosOverlayView: UIView {
     @objc private func closeButtonTapped(_ sender: UIBarButtonItem) {
         photosViewController?.dismiss(animated: true, completion: nil)
     }
-
-    private func setupNavigationBar() {
-        navigationBar = UINavigationBar()
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        navigationBar.backgroundColor = UIColor.clear
-        navigationBar.barTintColor = nil
-        navigationBar.isTranslucent = true
-        navigationBar.shadowImage = UIImage()
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-
-        navigationItem = UINavigationItem(title: "")
-        navigationBar.items = [navigationItem]
-        addSubview(navigationBar)
-
-        let topConstraint = NSLayoutConstraint(item: navigationBar, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0)
-        let widthConstraint = NSLayoutConstraint(item: navigationBar, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0.0)
-        let horizontalPositionConstraint = NSLayoutConstraint(item: navigationBar, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0)
-        self.addConstraints([topConstraint,widthConstraint,horizontalPositionConstraint])
-
-
-        let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 84, height: 30))
-        rightButton.setBackgroundImage(UIImage(named: "photo_dismiss"), for: .normal)
-        rightButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 21)
-        rightButton.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
-        rightBarButtonItem = UIBarButtonItem(customView: rightButton)
-        closeButton = rightButton
-    }
-
-    private func setupCaptionLabel() {
-
+    
+    private func setUpCloseButton() {
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(closeButton)
+        let topConstraint = NSLayoutConstraint(item: closeButton, attribute: .top, relatedBy: .equal, toItem: self, attribute: .topMargin, multiplier: 1.0, constant: 10.0)
+        let widthConstraint = NSLayoutConstraint(item: closeButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 84)
+        let heightConstraint = NSLayoutConstraint(item: closeButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 30)
+        let rightPositionConstraint = NSLayoutConstraint(item: closeButton, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: -10.0)
+        self.addConstraints([topConstraint, widthConstraint, heightConstraint, rightPositionConstraint])
     }
 
 }
