@@ -8,7 +8,7 @@ typealias PhotosViewControllerDismissHandler = (_ viewController: PhotosViewCont
 typealias PhotosViewControllerLongPressHandler = (_ photo: PhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> (Bool)
 
 
-class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIViewControllerTransitioningDelegate, ImageBlurable {
+class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ImageBlurable {
 
     var referenceViewForPhotoWhenDismissingHandler: PhotosViewControllerReferenceViewHandler?
     var navigateToPhotoHandler: PhotosViewControllerNavigateToPhotoHandler?
@@ -27,8 +27,8 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
     private(set) var pageViewController: UIPageViewController!
     private(set) var dataSource: PhotosDataSource
     
-    let interactiveAnimator: PhotosInteractionAnimator = PhotosInteractionAnimator()
-    let transitionAnimator: PhotosTransitionAnimator = PhotosTransitionAnimator()
+//    let interactiveAnimator: PhotosInteractionAnimator = PhotosInteractionAnimator()
+//    let transitionAnimator: PhotosTransitionAnimator = PhotosTransitionAnimator()
     
     private(set) lazy var singleTapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(PhotosViewController.handleSingleTapGestureRecognizer(_:)))
@@ -40,10 +40,12 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         return gesture
     }()
     
-    private var interactiveDismissal: Bool = false
+//    private var interactiveDismissal: Bool = false
     private var statusBarHidden = false
     private var shouldHandleLongPressGesture = false
 
+    let transitionDelegate = PhotoTransitionDelegate()
+    
     
     // MARK: - Initialization
     
@@ -68,9 +70,12 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         dataSource = PhotosDataSource(photos: photos)
         super.init(nibName: nil, bundle: nil)
         initialSetupWithInitialPhoto(initialPhoto)
-        transitionAnimator.startingView = referenceView
-        transitionAnimator.photo = initialPhoto
-        transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
+//        transitionAnimator.startingView = referenceView
+//        transitionAnimator.photo = initialPhoto
+//        transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
+        transitionDelegate.transitionAnimator.startingView = referenceView
+        transitionDelegate.transitionAnimator.photo = initialPhoto
+        transitionDelegate.transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
         overlayView = PhotosOverlayView(frame: CGRect.zero)
         overlayView?.photosViewController = self
     }
@@ -112,7 +117,7 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if !interactiveDismissal {
+        if !transitionDelegate.interactiveDismissal {
             navigationController?.navigationBar.isHidden = false
         }
     }
@@ -129,26 +134,26 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         if currentPhotoViewController?.scalingImageView.imageView.image != nil {
             startingView = currentPhotoViewController?.scalingImageView.imageView
         }
-        transitionAnimator.startingView = startingView
-        transitionAnimator.photo = currentPhoto
-        
+        transitionDelegate.transitionAnimator.startingView = startingView
+        transitionDelegate.transitionAnimator.photo = currentPhoto
+
         if let currentPhoto = currentPhoto {
-            transitionAnimator.endingView = referenceViewForPhotoWhenDismissingHandler?(currentPhoto)
+            transitionDelegate.transitionAnimator.endingView = referenceViewForPhotoWhenDismissingHandler?(currentPhoto)
         } else {
-            transitionAnimator.endingView = nil
+            transitionDelegate.transitionAnimator.endingView = nil
         }
 
         let overlayWasHiddenBeforeTransition = overlayView?.isHidden ?? false
         overlayView?.setHidden(true, animated: true)
-        
+
         willDismissHandler?(self)
-        
+
         super.dismiss(animated: flag) { () -> Void in
             let isStillOnscreen = self.view.window != nil
             if isStillOnscreen && !overlayWasHiddenBeforeTransition {
                 self.overlayView?.setHidden(false, animated: true)
             }
-            
+
             if !isStillOnscreen {
                 self.didDismissHandler?(self)
             }
@@ -200,21 +205,8 @@ extension PhotosViewController {
     private func initialSetupWithInitialPhoto(_ initialPhoto: PhotoViewable? = nil) {
         setupPageViewControllerWithInitialPhoto(initialPhoto)
         modalPresentationStyle = .custom
-        transitioningDelegate = self
+        transitioningDelegate = transitionDelegate
         modalPresentationCapturesStatusBarAppearance = true
-    }
-    
-    private func setupOverlayView() {
-        guard let overlayView = overlayView else { return }
-        
-        overlayView.photosViewController = self
-        
-        updateCurrentPhotosInformation()
-        
-        overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        overlayView.frame = view.bounds
-        view.addSubview(overlayView)
-        overlayView.setHidden(true, animated: false)
     }
     
     private func setupPageViewControllerWithInitialPhoto(_ initialPhoto: PhotoViewable? = nil) {
@@ -230,6 +222,21 @@ extension PhotosViewController {
         }
     }
     
+    private func setupOverlayView() {
+        guard let overlayView = overlayView else { return }
+        
+        overlayView.photosViewController = self
+        
+        updateCurrentPhotosInformation()
+        
+        overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        overlayView.frame = view.bounds
+        view.addSubview(overlayView)
+        overlayView.setHidden(true, animated: false)
+    }
+    
+    
+    
     private func updateCurrentPhotosInformation() {
         if let currentPhoto = currentPhoto {
             overlayView?.populateWithPhoto(currentPhoto)
@@ -243,72 +250,7 @@ extension PhotosViewController {
             })
         }
     }
-}
-
-
-// MARK: - Public Function
-
-extension PhotosViewController {
-    func changeToPhoto(_ photo: PhotoViewable, animated: Bool) {
-        if !dataSource.containsPhoto(photo) {
-            return
-        }
-        let photoViewController = initializePhotoViewControllerForPhoto(photo)
-        pageViewController.setViewControllers([photoViewController], direction: .forward, animated: animated, completion: nil)
-        updateCurrentPhotosInformation()
-    }
-}
-
-
-// MARK: - Gesture Recognizers
-
-extension PhotosViewController {
-    @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            interactiveDismissal = true
-            dismiss(animated: true, completion: nil)
-        } else {
-            interactiveDismissal = gestureRecognizer.state != .ended
-            interactiveAnimator.handlePanWithPanGestureRecognizer(gestureRecognizer, viewToPan: pageViewController.view, anchorPoint: CGPoint(x: view.bounds.midX, y: view.bounds.midY))
-        }
-    }
     
-    @objc private func handleSingleTapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard let overlayView = overlayView else { return }
-        overlayView.setHidden(!overlayView.isHidden, animated: true)
-    }
-}
-
-
-// MARK: - UIViewControllerTransitioningDelegate
-
-extension PhotosViewController {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transitionAnimator.dismissing = false
-        return transitionAnimator
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transitionAnimator.dismissing = true
-        return transitionAnimator
-    }
-    
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        if interactiveDismissal {
-            interactiveAnimator.animator = transitionAnimator
-            interactiveAnimator.shouldAnimateUsingAnimator = transitionAnimator.endingView != nil
-            interactiveAnimator.viewToHideWhenBeginningTransition = transitionAnimator.startingView != nil ? transitionAnimator.endingView : nil
-            
-            return interactiveAnimator
-        }
-        return nil
-    }
-}
-
-
-// MARK: - UIPageViewControllerDataSource / UIPageViewControllerDelegate
-
-extension PhotosViewController {
     private func initializePhotoViewControllerForPhoto(_ photo: PhotoViewable) -> PhotoViewController {
         let photoViewController = PhotoViewController(photo: photo)
         singleTapGestureRecognizer.require(toFail: photoViewController.doubleTapGestureRecognizer)
@@ -336,6 +278,46 @@ extension PhotosViewController {
         }
         return photoViewController
     }
+}
+
+
+// MARK: - Public Function
+
+extension PhotosViewController {
+    func changeToPhoto(_ photo: PhotoViewable, animated: Bool) {
+        if !dataSource.containsPhoto(photo) {
+            return
+        }
+        let photoViewController = initializePhotoViewControllerForPhoto(photo)
+        pageViewController.setViewControllers([photoViewController], direction: .forward, animated: animated, completion: nil)
+        updateCurrentPhotosInformation()
+    }
+}
+
+
+// MARK: - Gesture Recognizers
+
+extension PhotosViewController {
+    @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            transitionDelegate.interactiveDismissal = true
+            dismiss(animated: true, completion: nil)
+        } else {
+            transitionDelegate.interactiveDismissal = gestureRecognizer.state != .ended
+            transitionDelegate.interactiveAnimator.handlePanWithPanGestureRecognizer(gestureRecognizer, viewToPan: pageViewController.view, anchorPoint: CGPoint(x: view.bounds.midX, y: view.bounds.midY))
+        }
+    }
+    
+    @objc private func handleSingleTapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard let overlayView = overlayView else { return }
+        overlayView.setHidden(!overlayView.isHidden, animated: true)
+    }
+}
+
+
+// MARK: - UIPageViewControllerDataSource / UIPageViewControllerDelegate
+
+extension PhotosViewController {
     
     @objc func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let photoViewController = viewController as? PhotoViewController,
@@ -364,7 +346,6 @@ extension PhotosViewController {
         }
     }
 }
-
 
 
 // MARK: -

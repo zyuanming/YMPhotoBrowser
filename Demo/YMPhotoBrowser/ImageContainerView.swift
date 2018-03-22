@@ -188,8 +188,15 @@ class ImageContainerView: UIView {
                 }
             }
 
-            let navPreview = PhotoNavigationController(rootViewController: galleryPreview)
-            controller?.present(navPreview, animated: true, completion: nil)
+//            let navPreview = PhotoNavigationController(rootViewController: galleryPreview)
+//            let transitionDelegate = PhotoTransitionDelegate()
+//            transitionDelegate.transitionAnimator.startingView = feedImageView
+//            transitionDelegate.transitionAnimator.photo = currentPhoto
+//            transitionDelegate.transitionAnimator.endingView = galleryPreview.currentPhotoViewController?.scalingImageView.imageView
+//            galleryPreview.transitioningDelegate = transitionDelegate
+//            galleryPreview.modalPresentationStyle = .custom
+//            galleryPreview.modalPresentationCapturesStatusBarAppearance = true
+            controller?.present(galleryPreview, animated: true, completion: nil)
 
         }
     }
