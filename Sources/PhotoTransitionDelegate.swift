@@ -25,6 +25,10 @@ class PhotoTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
         return transitionAnimator
     }
     
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return nil
+    }
+    
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         if interactiveDismissal {
             interactiveAnimator.animator = transitionAnimator
