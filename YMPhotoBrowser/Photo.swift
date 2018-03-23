@@ -15,12 +15,12 @@ public protocol PhotoViewable: class {
     func hasCachedImage(_ url: URL?) -> Bool
 }
 
-class Photo: PhotoViewable {
-    var image: UIImage?
-    var thumbnailImage: UIImage?
+public class Photo: PhotoViewable {
+    public var image: UIImage?
+    public var thumbnailImage: UIImage?
     
-    var imageURL: URL?
-    var thumbnailImageURL: URL?
+    public var imageURL: URL?
+    public var thumbnailImageURL: URL?
     
     public init(image: UIImage?, thumbnailImage: UIImage?) {
         self.image = image
@@ -37,14 +37,14 @@ class Photo: PhotoViewable {
         self.thumbnailImage = thumbnailImage
     }
     
-    func loadImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
+    public func loadImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
         if let image = image {
             completion(image, nil)
             return
         }
         loadImageWithURL(imageURL, completion: completion)
     }
-    func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
+    public func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
         if let thumbnailImage = thumbnailImage {
             completion(thumbnailImage, nil)
             return
@@ -52,7 +52,7 @@ class Photo: PhotoViewable {
         loadImageWithURL(thumbnailImageURL, completion: completion)
     }
 
-    func getCachedImage(_ url: URL?) -> UIImage? {
+    public func getCachedImage(_ url: URL?) -> UIImage? {
         guard let url = url else { return nil }
 
         let imageCache = ImageCache.default
@@ -67,7 +67,7 @@ class Photo: PhotoViewable {
         return cachedImage
     }
 
-    func hasCachedImage(_ url: URL?) -> Bool {
+    public func hasCachedImage(_ url: URL?) -> Bool {
         guard let url = url else { return false }
 
         return ImageCache.default.imageCachedType(forKey: url.cacheKey).cached

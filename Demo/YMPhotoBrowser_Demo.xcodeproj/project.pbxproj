@@ -7,61 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6005C4131EB2EBB600442732 /* UIImageView+LongPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005C4121EB2EBB600442732 /* UIImageView+LongPress.swift */; };
-		6005C4151EB2EC2C00442732 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005C4141EB2EC2B00442732 /* UIViewExtension.swift */; };
 		6005C4181EB31C0300442732 /* weibo.json in Resources */ = {isa = PBXBuildFile; fileRef = 6005C4171EB31C0300442732 /* weibo.json */; };
 		6005C41A1EB31D5000442732 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005C4191EB31D5000442732 /* FeedCell.swift */; };
 		6005C41C1EB31E2700442732 /* ImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005C41B1EB31E2700442732 /* ImageContainerView.swift */; };
 		6005C41E1EB31ECD00442732 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005C41D1EB31ECD00442732 /* Feed.swift */; };
-		603340C81EB216AD00154316 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340BE1EB216AD00154316 /* Photo.swift */; };
-		603340CA1EB216AD00154316 /* PhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C01EB216AD00154316 /* PhotosDataSource.swift */; };
-		603340CB1EB216AD00154316 /* PhotosInteractionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C11EB216AD00154316 /* PhotosInteractionAnimator.swift */; };
-		603340CC1EB216AD00154316 /* PhotosOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C21EB216AD00154316 /* PhotosOverlayView.swift */; };
-		603340CD1EB216AD00154316 /* PhotosTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C31EB216AD00154316 /* PhotosTransitionAnimator.swift */; };
-		603340CE1EB216AD00154316 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C41EB216AD00154316 /* PhotosViewController.swift */; };
-		603340CF1EB216AD00154316 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C51EB216AD00154316 /* PhotoViewController.swift */; };
-		603340D01EB216AD00154316 /* ScalingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603340C61EB216AD00154316 /* ScalingImageView.swift */; };
 		6045B2B31EB215650069D6B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6045B2B21EB215650069D6B4 /* AppDelegate.swift */; };
 		6045B2B51EB215650069D6B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6045B2B41EB215650069D6B4 /* ViewController.swift */; };
 		6045B2B81EB215650069D6B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6045B2B61EB215650069D6B4 /* Main.storyboard */; };
 		6045B2BA1EB215650069D6B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6045B2B91EB215650069D6B4 /* Assets.xcassets */; };
 		6045B2BD1EB215650069D6B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6045B2BB1EB215650069D6B4 /* LaunchScreen.storyboard */; };
-		C0E71B7E206397F60061BFD2 /* PhotoTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E71B7D206397F60061BFD2 /* PhotoTransitionDelegate.swift */; };
-		D2050ED88527C8E53125FABE /* Pods_YMPhotoBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848CDD68A84295CC556B511E /* Pods_YMPhotoBrowser.framework */; };
+		F27ED4573E08B7CDED396E5F /* Pods_YMPhotoBrowser_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5354902F52EE40C349356E1 /* Pods_YMPhotoBrowser_Demo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0647733A65B86E86E4C081BE /* Pods_YMPhotoBrowserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YMPhotoBrowserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		24FE96F999E1D41E38023093 /* Pods-YMPhotoBrowserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowserTests/Pods-YMPhotoBrowserTests.release.xcconfig"; sourceTree = "<group>"; };
-		6005C4121EB2EBB600442732 /* UIImageView+LongPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+LongPress.swift"; sourceTree = "<group>"; };
-		6005C4141EB2EC2B00442732 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		6005C4171EB31C0300442732 /* weibo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weibo.json; sourceTree = "<group>"; };
 		6005C4191EB31D5000442732 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		6005C41B1EB31E2700442732 /* ImageContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageContainerView.swift; sourceTree = "<group>"; };
 		6005C41D1EB31ECD00442732 /* Feed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
-		603340BE1EB216AD00154316 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
-		603340C01EB216AD00154316 /* PhotosDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosDataSource.swift; sourceTree = "<group>"; };
-		603340C11EB216AD00154316 /* PhotosInteractionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosInteractionAnimator.swift; sourceTree = "<group>"; };
-		603340C21EB216AD00154316 /* PhotosOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosOverlayView.swift; sourceTree = "<group>"; };
-		603340C31EB216AD00154316 /* PhotosTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosTransitionAnimator.swift; sourceTree = "<group>"; };
-		603340C41EB216AD00154316 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
-		603340C51EB216AD00154316 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
-		603340C61EB216AD00154316 /* ScalingImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalingImageView.swift; sourceTree = "<group>"; };
-		6045B2AF1EB215650069D6B4 /* YMPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YMPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6045B2AF1EB215650069D6B4 /* YMPhotoBrowser_Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YMPhotoBrowser_Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6045B2B21EB215650069D6B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6045B2B41EB215650069D6B4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6045B2B71EB215650069D6B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6045B2B91EB215650069D6B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6045B2BC1EB215650069D6B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6045B2BE1EB215650069D6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		64F9B3F6A25147A65CE8FC62 /* Pods-YMPhotoBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowser/Pods-YMPhotoBrowser.debug.xcconfig"; sourceTree = "<group>"; };
-		75BA1778C9A5B57AA64F25F0 /* Pods-YMPhotoBrowserUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowserUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowserUITests/Pods-YMPhotoBrowserUITests.release.xcconfig"; sourceTree = "<group>"; };
-		8083AD14B04D9735D3A2D0AB /* Pods-YMPhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowser/Pods-YMPhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		848CDD68A84295CC556B511E /* Pods_YMPhotoBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YMPhotoBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A64685A7D1E50290A5A726CB /* Pods-YMPhotoBrowserUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowserUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowserUITests/Pods-YMPhotoBrowserUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		AEA9956D9D06DDA0CE5DC8C3 /* Pods-YMPhotoBrowserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowserTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowserTests/Pods-YMPhotoBrowserTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C0E71B7D206397F60061BFD2 /* PhotoTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTransitionDelegate.swift; sourceTree = "<group>"; };
+		9AE0B06444A298C14ABCF285 /* Pods-YMPhotoBrowser_Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowser_Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		E5354902F52EE40C349356E1 /* Pods_YMPhotoBrowser_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YMPhotoBrowser_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70A1C18E8F7F19B86D8EA78 /* Pods_YMPhotoBrowserUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YMPhotoBrowserUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBA7CE51AE6B69EBB77F6A9B /* Pods-YMPhotoBrowser_Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YMPhotoBrowser_Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2050ED88527C8E53125FABE /* Pods_YMPhotoBrowser.framework in Frameworks */,
+				F27ED4573E08B7CDED396E5F /* Pods_YMPhotoBrowser_Demo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,29 +59,10 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		603340BC1EB2166400154316 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				603340BE1EB216AD00154316 /* Photo.swift */,
-				603340C01EB216AD00154316 /* PhotosDataSource.swift */,
-				603340C11EB216AD00154316 /* PhotosInteractionAnimator.swift */,
-				603340C21EB216AD00154316 /* PhotosOverlayView.swift */,
-				603340C31EB216AD00154316 /* PhotosTransitionAnimator.swift */,
-				603340C41EB216AD00154316 /* PhotosViewController.swift */,
-				C0E71B7D206397F60061BFD2 /* PhotoTransitionDelegate.swift */,
-				603340C51EB216AD00154316 /* PhotoViewController.swift */,
-				603340C61EB216AD00154316 /* ScalingImageView.swift */,
-				6005C4121EB2EBB600442732 /* UIImageView+LongPress.swift */,
-				6005C4141EB2EC2B00442732 /* UIViewExtension.swift */,
-			);
-			name = Sources;
-			path = ../../Sources;
-			sourceTree = "<group>";
-		};
 		6045B2A61EB215650069D6B4 = {
 			isa = PBXGroup;
 			children = (
-				6045B2B11EB215650069D6B4 /* YMPhotoBrowser */,
+				6045B2B11EB215650069D6B4 /* YMPhotoBrowser_Demo */,
 				6045B2B01EB215650069D6B4 /* Products */,
 				EF0D53F13DD2FD6EC3430B8B /* Pods */,
 				906C0BCD883FDD834B9D3289 /* Frameworks */,
@@ -116,16 +72,15 @@
 		6045B2B01EB215650069D6B4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6045B2AF1EB215650069D6B4 /* YMPhotoBrowser.app */,
+				6045B2AF1EB215650069D6B4 /* YMPhotoBrowser_Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6045B2B11EB215650069D6B4 /* YMPhotoBrowser */ = {
+		6045B2B11EB215650069D6B4 /* YMPhotoBrowser_Demo */ = {
 			isa = PBXGroup;
 			children = (
 				6005C4161EB31BEF00442732 /* Resources */,
-				603340BC1EB2166400154316 /* Sources */,
 				6045B2B21EB215650069D6B4 /* AppDelegate.swift */,
 				6045B2B41EB215650069D6B4 /* ViewController.swift */,
 				6005C41B1EB31E2700442732 /* ImageContainerView.swift */,
@@ -136,7 +91,7 @@
 				6045B2BB1EB215650069D6B4 /* LaunchScreen.storyboard */,
 				6045B2BE1EB215650069D6B4 /* Info.plist */,
 			);
-			path = YMPhotoBrowser;
+			path = YMPhotoBrowser_Demo;
 			sourceTree = "<group>";
 		};
 		906C0BCD883FDD834B9D3289 /* Frameworks */ = {
@@ -145,6 +100,7 @@
 				848CDD68A84295CC556B511E /* Pods_YMPhotoBrowser.framework */,
 				0647733A65B86E86E4C081BE /* Pods_YMPhotoBrowserTests.framework */,
 				E70A1C18E8F7F19B86D8EA78 /* Pods_YMPhotoBrowserUITests.framework */,
+				E5354902F52EE40C349356E1 /* Pods_YMPhotoBrowser_Demo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,12 +108,8 @@
 		EF0D53F13DD2FD6EC3430B8B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				64F9B3F6A25147A65CE8FC62 /* Pods-YMPhotoBrowser.debug.xcconfig */,
-				8083AD14B04D9735D3A2D0AB /* Pods-YMPhotoBrowser.release.xcconfig */,
-				AEA9956D9D06DDA0CE5DC8C3 /* Pods-YMPhotoBrowserTests.debug.xcconfig */,
-				24FE96F999E1D41E38023093 /* Pods-YMPhotoBrowserTests.release.xcconfig */,
-				A64685A7D1E50290A5A726CB /* Pods-YMPhotoBrowserUITests.debug.xcconfig */,
-				75BA1778C9A5B57AA64F25F0 /* Pods-YMPhotoBrowserUITests.release.xcconfig */,
+				9AE0B06444A298C14ABCF285 /* Pods-YMPhotoBrowser_Demo.debug.xcconfig */,
+				FBA7CE51AE6B69EBB77F6A9B /* Pods-YMPhotoBrowser_Demo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -165,9 +117,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6045B2AE1EB215650069D6B4 /* YMPhotoBrowser */ = {
+		6045B2AE1EB215650069D6B4 /* YMPhotoBrowser_Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6045B2D71EB215650069D6B4 /* Build configuration list for PBXNativeTarget "YMPhotoBrowser" */;
+			buildConfigurationList = 6045B2D71EB215650069D6B4 /* Build configuration list for PBXNativeTarget "YMPhotoBrowser_Demo" */;
 			buildPhases = (
 				08A5A3B22D36009EBA8815A9 /* [CP] Check Pods Manifest.lock */,
 				6045B2AB1EB215650069D6B4 /* Sources */,
@@ -180,9 +132,9 @@
 			);
 			dependencies = (
 			);
-			name = YMPhotoBrowser;
+			name = YMPhotoBrowser_Demo;
 			productName = YMPhotoBrowser;
-			productReference = 6045B2AF1EB215650069D6B4 /* YMPhotoBrowser.app */;
+			productReference = 6045B2AF1EB215650069D6B4 /* YMPhotoBrowser_Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -202,7 +154,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6045B2AA1EB215650069D6B4 /* Build configuration list for PBXProject "YMPhotoBrowser" */;
+			buildConfigurationList = 6045B2AA1EB215650069D6B4 /* Build configuration list for PBXProject "YMPhotoBrowser_Demo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -215,7 +167,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6045B2AE1EB215650069D6B4 /* YMPhotoBrowser */,
+				6045B2AE1EB215650069D6B4 /* YMPhotoBrowser_Demo */,
 			);
 		};
 /* End PBXProject section */
@@ -246,7 +198,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-YMPhotoBrowser-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-YMPhotoBrowser_Demo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -259,18 +211,20 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser/Pods-YMPhotoBrowser-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/YMPhotoBrowser/YMPhotoBrowser.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YMPhotoBrowser.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser/Pods-YMPhotoBrowser-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C1D233271434244EBB5D727C /* [CP] Copy Pods Resources */ = {
@@ -285,7 +239,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser/Pods-YMPhotoBrowser-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -295,22 +249,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				603340D01EB216AD00154316 /* ScalingImageView.swift in Sources */,
-				603340CC1EB216AD00154316 /* PhotosOverlayView.swift in Sources */,
-				603340C81EB216AD00154316 /* Photo.swift in Sources */,
-				603340CF1EB216AD00154316 /* PhotoViewController.swift in Sources */,
-				603340CD1EB216AD00154316 /* PhotosTransitionAnimator.swift in Sources */,
-				603340CE1EB216AD00154316 /* PhotosViewController.swift in Sources */,
 				6005C41C1EB31E2700442732 /* ImageContainerView.swift in Sources */,
-				603340CB1EB216AD00154316 /* PhotosInteractionAnimator.swift in Sources */,
 				6005C41A1EB31D5000442732 /* FeedCell.swift in Sources */,
 				6005C41E1EB31ECD00442732 /* Feed.swift in Sources */,
 				6045B2B51EB215650069D6B4 /* ViewController.swift in Sources */,
 				6045B2B31EB215650069D6B4 /* AppDelegate.swift in Sources */,
-				6005C4151EB2EC2C00442732 /* UIViewExtension.swift in Sources */,
-				C0E71B7E206397F60061BFD2 /* PhotoTransitionDelegate.swift in Sources */,
-				603340CA1EB216AD00154316 /* PhotosDataSource.swift in Sources */,
-				6005C4131EB2EBB600442732 /* UIImageView+LongPress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,12 +386,12 @@
 		};
 		6045B2D81EB215650069D6B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64F9B3F6A25147A65CE8FC62 /* Pods-YMPhotoBrowser.debug.xcconfig */;
+			baseConfigurationReference = 9AE0B06444A298C14ABCF285 /* Pods-YMPhotoBrowser_Demo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = YMPhotoBrowser/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/YMPhotoBrowser_Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.YMPhotoBrowser;
@@ -460,12 +403,12 @@
 		};
 		6045B2D91EB215650069D6B4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8083AD14B04D9735D3A2D0AB /* Pods-YMPhotoBrowser.release.xcconfig */;
+			baseConfigurationReference = FBA7CE51AE6B69EBB77F6A9B /* Pods-YMPhotoBrowser_Demo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = YMPhotoBrowser/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/YMPhotoBrowser_Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.YMPhotoBrowser;
@@ -478,7 +421,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6045B2AA1EB215650069D6B4 /* Build configuration list for PBXProject "YMPhotoBrowser" */ = {
+		6045B2AA1EB215650069D6B4 /* Build configuration list for PBXProject "YMPhotoBrowser_Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6045B2D51EB215650069D6B4 /* Debug */,
@@ -487,7 +430,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6045B2D71EB215650069D6B4 /* Build configuration list for PBXNativeTarget "YMPhotoBrowser" */ = {
+		6045B2D71EB215650069D6B4 /* Build configuration list for PBXNativeTarget "YMPhotoBrowser_Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6045B2D81EB215650069D6B4 /* Debug */,

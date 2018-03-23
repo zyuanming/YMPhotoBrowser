@@ -5,8 +5,14 @@ import UIKit
 class PhotosOverlayView: UIView {
     
     private lazy var closeButton: UIButton = {
+        let frameworkBundle = Bundle(for: type(of: self))
+        // 这里对应 s.resource_bundles = { 'Image' => ['YMPhotoBrowser/Resources/*.png']}
+        let resourceBundleURL = frameworkBundle.url(forResource: "Image", withExtension: "bundle")
+        let resourceBundle = Bundle(url: resourceBundleURL!)
+        let image = UIImage(named: "photo_dismiss", in: resourceBundle, compatibleWith: nil)
+        
         let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "photo_dismiss"), for: .normal)
+        button.setBackgroundImage(image, for: .normal)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 21)
         button.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
         return button

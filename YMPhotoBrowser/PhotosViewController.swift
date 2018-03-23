@@ -2,19 +2,19 @@
 
 import UIKit
 
-typealias PhotosViewControllerReferenceViewHandler = (_ photo: PhotoViewable) -> (UIView?)
-typealias PhotosViewControllerNavigateToPhotoHandler = (_ photo: PhotoViewable) -> ()
-typealias PhotosViewControllerDismissHandler = (_ viewController: PhotosViewController) -> ()
-typealias PhotosViewControllerLongPressHandler = (_ photo: PhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> (Bool)
+public typealias PhotosViewControllerReferenceViewHandler = (_ photo: PhotoViewable) -> (UIView?)
+public typealias PhotosViewControllerNavigateToPhotoHandler = (_ photo: PhotoViewable) -> ()
+public typealias PhotosViewControllerDismissHandler = (_ viewController: PhotosViewController) -> ()
+public typealias PhotosViewControllerLongPressHandler = (_ photo: PhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> (Bool)
 
 
-class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ImageBlurable {
+public class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ImageBlurable {
 
-    var referenceViewForPhotoWhenDismissingHandler: PhotosViewControllerReferenceViewHandler?
-    var navigateToPhotoHandler: PhotosViewControllerNavigateToPhotoHandler?
-    var willDismissHandler: PhotosViewControllerDismissHandler?
-    var didDismissHandler: PhotosViewControllerDismissHandler?
-    var longPressGestureHandler: PhotosViewControllerLongPressHandler?
+    public var referenceViewForPhotoWhenDismissingHandler: PhotosViewControllerReferenceViewHandler?
+    public var navigateToPhotoHandler: PhotosViewControllerNavigateToPhotoHandler?
+    public var willDismissHandler: PhotosViewControllerDismissHandler?
+    public var didDismissHandler: PhotosViewControllerDismissHandler?
+    public var longPressGestureHandler: PhotosViewControllerLongPressHandler?
     var overlayView: PhotosOverlayView?
     var currentPhotoViewController: PhotoViewController? {
         return pageViewController.viewControllers?.first as? PhotoViewController
@@ -50,7 +50,7 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         pageViewController.dataSource = nil
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         dataSource = PhotosDataSource(photos: [])
         super.init(nibName: nil, bundle: nil)
         initialSetupWithInitialPhoto(nil)
@@ -62,7 +62,7 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         initialSetupWithInitialPhoto(nil)
     }
 
-    init(photos: [PhotoViewable], initialPhoto: PhotoViewable? = nil, referenceView: UIView? = nil) {
+    public init(photos: [PhotoViewable], initialPhoto: PhotoViewable? = nil, referenceView: UIView? = nil) {
         dataSource = PhotosDataSource(photos: photos)
         super.init(nibName: nil, bundle: nil)
         initialSetupWithInitialPhoto(initialPhoto)
@@ -76,7 +76,7 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - View Life Cycle
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         addBlurBackground()
         view.tintColor = UIColor.white
@@ -95,7 +95,7 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         setupOverlayView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         statusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
@@ -103,12 +103,12 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
 
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         overlayView?.setHidden(false, animated: true)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if !transitionDelegate.interactiveDismissal {
             navigationController?.navigationBar.isHidden = false
@@ -118,7 +118,7 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - View Controller Dismissal
     
-    override func dismiss(animated flag: Bool, completion: (() -> Void)?) {
+    override public func dismiss(animated flag: Bool, completion: (() -> Void)?) {
         if presentedViewController != nil {
             super.dismiss(animated: flag, completion: completion)
             return
@@ -157,15 +157,15 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - UIResponder
     
-    override func copy(_ sender: Any?) {
+    override public func copy(_ sender: Any?) {
         UIPasteboard.general.image = currentPhoto?.image ?? currentPhotoViewController?.scalingImageView.image
     }
     
-    override var canBecomeFirstResponder: Bool {
+    override public var canBecomeFirstResponder: Bool {
         return true
     }
     
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         if let _ = currentPhoto?.image ?? currentPhotoViewController?.scalingImageView.image , shouldHandleLongPressGesture && action == #selector(NSObject.copy) {
             return true
         }
@@ -175,18 +175,18 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - Status Bar
     
-    override var prefersStatusBarHidden: Bool {
+    override public var prefersStatusBarHidden: Bool {
         if let parentStatusBarHidden = presentingViewController?.prefersStatusBarHidden , parentStatusBarHidden == true {
             return parentStatusBarHidden
         }
         return statusBarHidden
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
+    override public var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
     }
     
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+    override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .fade
     }
 }
@@ -312,7 +312,7 @@ extension PhotosViewController {
 
 extension PhotosViewController {
     
-    @objc func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    @objc public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let photoViewController = viewController as? PhotoViewController,
             let photoIndex = dataSource.indexOfPhoto(photoViewController.photo),
             let newPhoto = dataSource[photoIndex-1] else {
@@ -321,7 +321,7 @@ extension PhotosViewController {
         return initializePhotoViewControllerForPhoto(newPhoto)
     }
     
-    @objc func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    @objc public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let photoViewController = viewController as? PhotoViewController,
             let photoIndex = dataSource.indexOfPhoto(photoViewController.photo),
             let newPhoto = dataSource[photoIndex+1] else {
@@ -330,7 +330,7 @@ extension PhotosViewController {
         return initializePhotoViewControllerForPhoto(newPhoto)
     }
     
-    @objc func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    @objc public func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed {
             updateCurrentPhotosInformation()
             if let currentPhotoViewController = currentPhotoViewController {

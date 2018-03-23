@@ -2,6 +2,7 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import YMPhotoBrowser
 
 class ImageContainerView: UIView {
     fileprivate var feedModel: Feed?
