@@ -27,9 +27,6 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
     private(set) var pageViewController: UIPageViewController!
     private(set) var dataSource: PhotosDataSource
     
-//    let interactiveAnimator: PhotosInteractionAnimator = PhotosInteractionAnimator()
-//    let transitionAnimator: PhotosTransitionAnimator = PhotosTransitionAnimator()
-    
     private(set) lazy var singleTapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(PhotosViewController.handleSingleTapGestureRecognizer(_:)))
     }()
@@ -40,7 +37,6 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         return gesture
     }()
     
-//    private var interactiveDismissal: Bool = false
     private var statusBarHidden = false
     private var shouldHandleLongPressGesture = false
 
@@ -70,9 +66,6 @@ class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UI
         dataSource = PhotosDataSource(photos: photos)
         super.init(nibName: nil, bundle: nil)
         initialSetupWithInitialPhoto(initialPhoto)
-//        transitionAnimator.startingView = referenceView
-//        transitionAnimator.photo = initialPhoto
-//        transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
         transitionDelegate.transitionAnimator.startingView = referenceView
         transitionDelegate.transitionAnimator.photo = initialPhoto
         transitionDelegate.transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
@@ -345,13 +338,6 @@ extension PhotosViewController {
             }
         }
     }
-}
-
-
-// MARK: -
-
-extension PhotosViewController {
-    
 }
 
 

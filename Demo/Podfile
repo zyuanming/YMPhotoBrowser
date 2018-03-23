@@ -9,14 +9,4 @@ target 'YMPhotoBrowser' do
   pod 'Kingfisher', '~> 4.5.0'
   pod 'SnapKit', '~> 4.0.0'
 
-  target 'YMPhotoBrowserTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'YMPhotoBrowserUITests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
 end
