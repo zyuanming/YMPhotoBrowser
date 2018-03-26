@@ -302,8 +302,7 @@ extension PhotosViewController {
     }
     
     @objc private func handleSingleTapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard let overlayView = overlayView else { return }
-        overlayView.setHidden(!overlayView.isHidden, animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
