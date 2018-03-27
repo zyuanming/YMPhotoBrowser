@@ -1,6 +1,10 @@
 # YMPhotoBrowser
 
-`YMPhotoBrowser` is a modern looking photo browser written in `Swift` for iOS.
+![iOS 8.0+](https://img.shields.io/badge/iOS-8.0%2B-blue.svg)
+![Swift 4.0+](https://img.shields.io/badge/Swift-4.0%2B-orange.svg)
+![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
+
+YMPhotoBrowser is a modern looking photo browser written in `Swift` for iOS.
 It was inspired by [NYTPhotoViewer](https://github.com/NYTimes/NYTPhotoViewer) and [INSPhotoGallery](https://github.com/inspace-io/INSPhotoGallery)
 
 ## Requirements
