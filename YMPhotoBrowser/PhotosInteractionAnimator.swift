@@ -9,23 +9,39 @@ class PhotosInteractionAnimator: NSObject, UIViewControllerInteractiveTransition
     
     private var transitionContext: UIViewControllerContextTransitioning?
     
+}
+
+
+// MARK: - UIViewControllerInteractiveTransitioning
+
+extension PhotosInteractionAnimator {
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         viewToHideWhenBeginningTransition?.alpha = 0.0
         self.transitionContext = transitionContext
     }
-    
+}
+
+
+// MARK: - Public Function
+
+extension PhotosInteractionAnimator {
     func handlePanWithPanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer, viewToPan: UIView, anchorPoint: CGPoint) {
         guard let fromView = transitionContext?.view(forKey: UITransitionContextViewKey.from) else {
             return
         }
         let translatedPanGesturePoint = gestureRecognizer.translation(in: fromView)
-        let newCenterPoint = CGPoint(x: anchorPoint.x, y: anchorPoint.y + translatedPanGesturePoint.y)
+        let newCenterPoint = CGPoint(x: anchorPoint.x + translatedPanGesturePoint.x, y: anchorPoint.y + translatedPanGesturePoint.y)
         
         viewToPan.center = newCenterPoint
         
         let verticalDelta = newCenterPoint.y - anchorPoint.y
         let backgroundAlpha = backgroundAlphaForPanningWithVerticalDelta(verticalDelta)
         fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(backgroundAlpha)
+
+        // 拖动图片时候，缩放图片
+        var scaleTransForm = CGAffineTransform.identity
+        scaleTransForm = scaleTransForm.scaledBy(x: backgroundAlpha, y: backgroundAlpha)
+        viewToPan.transform = scaleTransForm
         
         if gestureRecognizer.state == .ended {
             finishPanWithPanGestureRecognizer(gestureRecognizer, verticalDelta: verticalDelta,viewToPan: viewToPan, anchorPoint: anchorPoint)
@@ -75,6 +91,7 @@ class PhotosInteractionAnimator: NSObject, UIViewControllerInteractiveTransition
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: { () -> Void in
                 viewToPan.center = finalPageViewCenterPoint
                 fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(CGFloat(finalBackgroundAlpha))
+                viewToPan.transform = CGAffineTransform.identity
                 
             }, completion: { finished in
                 if isDismissing {
@@ -92,7 +109,12 @@ class PhotosInteractionAnimator: NSObject, UIViewControllerInteractiveTransition
             })
         }
     }
-    
+}
+
+
+// MARK: - Private Function
+
+extension PhotosInteractionAnimator {
     private func fixCancellationStatusBarAppearanceBug() {
         guard let toViewController = self.transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.to),
             let fromViewController = self.transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.from) else {
@@ -113,13 +135,16 @@ class PhotosInteractionAnimator: NSObject, UIViewControllerInteractiveTransition
         guard let fromView = transitionContext?.view(forKey: UITransitionContextViewKey.from) else {
             return 0.0
         }
-        
         let startingAlpha: CGFloat = 1.0
         let finalAlpha: CGFloat = 0.1
         let totalAvailableAlpha = startingAlpha - finalAlpha
         
-        let maximumDelta = CGFloat(fromView.bounds.height / 2.0)
+        let maximumDelta = CGFloat(fromView.bounds.height / 3.0)
         let deltaAsPercentageOfMaximum = min(abs(delta) / maximumDelta, 1.0)
-        return startingAlpha - (deltaAsPercentageOfMaximum * totalAvailableAlpha)
+        let changeAlpha = startingAlpha - (deltaAsPercentageOfMaximum * totalAvailableAlpha)
+        print("delta: " + "\(delta)")
+        print("deltaAsPercentageOfMaximum: " + "\(deltaAsPercentageOfMaximum)")
+        print("changeAlpha: " + "\(changeAlpha)")
+        return changeAlpha
     }
 }
