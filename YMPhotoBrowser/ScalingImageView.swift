@@ -1,13 +1,9 @@
-
-
 import UIKit
 
-class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
+class ScalingImageView: UIScrollView {
+    
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.shadowColor = UIColor.black.cgColor
-        imageView.layer.shadowOffset = CGSize(width: 0, height: 1)
-        imageView.layer.shadowOpacity = 1
         self.addSubview(imageView)
         return imageView
     }()
@@ -18,6 +14,9 @@ class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
         }
     }
 
+    
+    // MARK: - Initialize
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupImageScrollView()
@@ -28,6 +27,17 @@ class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
         setupImageScrollView()
     }
     
+    override var frame: CGRect {
+        didSet {
+            updateImageLayout()
+        }
+    }
+}
+
+
+// MARK: - Function
+
+extension ScalingImageView {
     private func setupImageScrollView() {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
@@ -35,21 +45,21 @@ class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
         minimumZoomScale = 1
         maximumZoomScale = 2
     }
-
+    
     func updateImageLayout() {
         setImage(imageView.image, animated: true)
     }
-
+    
     func setImage(_ image: UIImage?, animated: Bool = false) {
         if let size = image?.size {
             var realSize = size
             let imageWidth = UIScreen.main.bounds.width
             realSize.width = imageWidth
             realSize.height = ceil(imageWidth * size.height / size.width)
-
+            
             imageView.image = image
             contentSize = CGSize(width: imageWidth, height: realSize.height)
-
+            
             let frame = CGRect(x: (UIScreen.main.bounds.width - realSize.width) / 2.0,
                                y: realSize.height > bounds.height ? 0 : (bounds.height - realSize.height) / 2.0,
                                width: realSize.width, height: realSize.height)
@@ -65,7 +75,12 @@ class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
             }
         }
     }
+}
 
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension ScalingImageView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard otherGestureRecognizer.isMember(of: UIPanGestureRecognizer.self),
             let panGesture = otherGestureRecognizer as? UIPanGestureRecognizer else { return false }
@@ -80,9 +95,6 @@ class ScalingImageView: UIScrollView, UIGestureRecognizerDelegate {
                 return true
             }
         }
-
         return false
     }
-
-
 }
