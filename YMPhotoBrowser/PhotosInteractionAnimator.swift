@@ -29,11 +29,12 @@ extension PhotosInteractionAnimator {
         guard let fromView = transitionContext?.view(forKey: UITransitionContextViewKey.from) else {
             return
         }
+        // 拖动图片，改变图片位置
         let translatedPanGesturePoint = gestureRecognizer.translation(in: fromView)
         let newCenterPoint = CGPoint(x: anchorPoint.x + translatedPanGesturePoint.x, y: anchorPoint.y + translatedPanGesturePoint.y)
-        
         viewToPan.center = newCenterPoint
         
+        // 拖动图片，改变背景透明度
         let verticalDelta = newCenterPoint.y - anchorPoint.y
         let backgroundAlpha = backgroundAlphaForPanningWithVerticalDelta(verticalDelta)
         fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(backgroundAlpha)
@@ -98,9 +99,6 @@ extension PhotosInteractionAnimator {
                     self.transitionContext?.finishInteractiveTransition()
                 } else {
                     self.transitionContext?.cancelInteractiveTransition()
-                    if !self.isRadar20070670Fixed() {
-                        self.fixCancellationStatusBarAppearanceBug()
-                    }
                 }
                 
                 self.viewToHideWhenBeginningTransition?.alpha = 1.0
@@ -115,22 +113,6 @@ extension PhotosInteractionAnimator {
 // MARK: - Private Function
 
 extension PhotosInteractionAnimator {
-    private func fixCancellationStatusBarAppearanceBug() {
-        guard let toViewController = self.transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.to),
-            let fromViewController = self.transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.from) else {
-                return
-        }
-        
-        let statusBarViewControllerSelector = Selector("_setPresentedSta" + "tusBarViewController:")
-        if toViewController.responds(to: statusBarViewControllerSelector) && fromViewController.modalPresentationCapturesStatusBarAppearance {
-            toViewController.perform(statusBarViewControllerSelector, with: fromViewController)
-        }
-    }
-    
-    private func isRadar20070670Fixed() -> Bool {
-        return ProcessInfo.processInfo.isOperatingSystemAtLeast(OperatingSystemVersion.init(majorVersion: 8, minorVersion: 3, patchVersion: 0))
-    }
-    
     private func backgroundAlphaForPanningWithVerticalDelta(_ delta: CGFloat) -> CGFloat {
         guard let fromView = transitionContext?.view(forKey: UITransitionContextViewKey.from) else {
             return 0.0

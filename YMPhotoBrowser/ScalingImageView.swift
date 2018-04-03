@@ -82,14 +82,17 @@ extension ScalingImageView {
 
 extension ScalingImageView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // 针对 长图 滑动到底部和顶部的处理
         guard otherGestureRecognizer.isMember(of: UIPanGestureRecognizer.self),
             let panGesture = otherGestureRecognizer as? UIPanGestureRecognizer else { return false }
         if contentSize.height - contentOffset.y <= frame.height {
+            // 滑到图片底部
             let velocity = panGesture.velocity(in: panGesture.view)
             if velocity.y <= 0 {
                 return true
             }
         } else if contentOffset.y <= 0 {
+            // 滑到图片顶部
             let velocity = panGesture.velocity(in: panGesture.view)
             if velocity.y >= 0 {
                 return true
