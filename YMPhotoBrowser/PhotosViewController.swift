@@ -210,9 +210,9 @@ extension PhotosViewController {
         let photoViewController = initializePhotoViewControllerForPhoto(photo)
         pageViewController.setViewControllers([photoViewController], direction: .forward, animated: false, completion: nil)
         
-        photo.loadThumbnailImageWithCompletionHandler({ [weak self] (image, _) in
+        photo.loadImageWithCompletionHandler { [weak self] (image, _) in
             self?.addBlurBackgroundImage(image)
-        })
+        }
         
         updateCurrentPhotosInformation()
     }
@@ -242,7 +242,9 @@ extension PhotosViewController {
     private func updateCurrentPhotosInformation() {
         if let currentPhoto = currentPhoto {
             overlayView?.populateWithPhoto(currentPhoto)
-            backgroundImageView.image = currentPhoto.image
+            currentPhoto.loadImageWithCompletionHandler({ [weak self] (image, _) in
+                self?.backgroundImageView.image = image
+            })
         }
     }
     
@@ -279,11 +281,16 @@ extension PhotosViewController {
         backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         backgroundImageView.image = image
         backgroundImageView.contentMode = .scaleAspectFill
-        let blurContentView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        blurContentView.frame = backgroundImageView.bounds
-        blurContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        var blurContentView: UIVisualEffectView?
+        if #available(iOS 10.0, *) {
+            blurContentView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        } else {
+            blurContentView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        }
+        blurContentView!.frame = backgroundImageView.bounds
+        blurContentView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.insertSubview(backgroundImageView, at: 0)
-        backgroundImageView.addSubview(blurContentView)
+        backgroundImageView.addSubview(blurContentView!)
     }
 }
 
