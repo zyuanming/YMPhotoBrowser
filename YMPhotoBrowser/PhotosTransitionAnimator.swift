@@ -50,7 +50,8 @@ extension PhotosTransitionAnimator {
         
         if shouldPerformZoomingAnimation {
             if transitionContext.isInteractive {
-                performScrollingDismissAnimationWithTransitionContext(transitionContext)
+//                performScrollingDismissAnimationWithTransitionContext(transitionContext)
+                performZoomingAnimationWithTransitionContext(transitionContext)
             } else {
                 performZoomingAnimationWithTransitionContext(transitionContext)
             }

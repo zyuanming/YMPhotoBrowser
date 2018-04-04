@@ -8,7 +8,7 @@ public typealias PhotosViewControllerDismissHandler = (_ viewController: PhotosV
 public typealias PhotosViewControllerLongPressHandler = (_ photo: PhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> (Bool)
 
 
-public class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ImageBlurable {
+public class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     public var referenceViewForPhotoWhenDismissingHandler: PhotosViewControllerReferenceViewHandler?
     public var navigateToPhotoHandler: PhotosViewControllerNavigateToPhotoHandler?
@@ -26,6 +26,7 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
 
     private(set) var pageViewController: UIPageViewController!
     private(set) var dataSource: PhotosDataSource
+    private(set) var backgroundImageView = UIImageView()
     
     private(set) lazy var singleTapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(PhotosViewController.handleSingleTapGestureRecognizer(_:)))
@@ -40,7 +41,7 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
     private var statusBarHidden = false
     private var shouldHandleLongPressGesture = false
 
-    let transitionDelegate = PhotoTransitionDelegate()
+    let photoTransitionDelegate = PhotoTransitionDelegate()
     
     
     // MARK: - Initialization
@@ -53,22 +54,19 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
     required public init?(coder aDecoder: NSCoder) {
         dataSource = PhotosDataSource(photos: [])
         super.init(nibName: nil, bundle: nil)
-        initialSetupWithInitialPhoto(nil)
+        initialSetupWith()
     }
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!) {
         dataSource = PhotosDataSource(photos: [])
         super.init(nibName: nil, bundle: nil)
-        initialSetupWithInitialPhoto(nil)
+        initialSetupWith()
     }
 
     public init(photos: [PhotoViewable], initialPhoto: PhotoViewable? = nil, referenceView: UIView? = nil) {
         dataSource = PhotosDataSource(photos: photos)
         super.init(nibName: nil, bundle: nil)
-        initialSetupWithInitialPhoto(initialPhoto)
-        transitionDelegate.transitionAnimator.startingView = referenceView
-        transitionDelegate.transitionAnimator.photo = initialPhoto
-        transitionDelegate.transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
+        initialSetupWith(initialPhoto, referenceView)
         overlayView = PhotosOverlayView(frame: CGRect.zero)
         overlayView?.photosViewController = self
     }
@@ -78,7 +76,6 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        addBlurBackground()
         view.tintColor = UIColor.white
         view.backgroundColor = UIColor.black
         navigationController?.navigationBar.isHidden = true
@@ -100,7 +97,6 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
         statusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
         navigationController?.navigationBar.isHidden = true
-
     }
 
     override public func viewDidAppear(_ animated: Bool) {
@@ -110,7 +106,7 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
 
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if !transitionDelegate.interactiveDismissal {
+        if !photoTransitionDelegate.interactiveDismissal {
             navigationController?.navigationBar.isHidden = false
         }
     }
@@ -127,13 +123,13 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
         if currentPhotoViewController?.scalingImageView.imageView.image != nil {
             startingView = currentPhotoViewController?.scalingImageView.imageView
         }
-        transitionDelegate.transitionAnimator.startingView = startingView
-        transitionDelegate.transitionAnimator.photo = currentPhoto
+        photoTransitionDelegate.transitionAnimator.startingView = startingView
+        photoTransitionDelegate.transitionAnimator.photo = currentPhoto
 
         if let currentPhoto = currentPhoto {
-            transitionDelegate.transitionAnimator.endingView = referenceViewForPhotoWhenDismissingHandler?(currentPhoto)
+            photoTransitionDelegate.transitionAnimator.endingView = referenceViewForPhotoWhenDismissingHandler?(currentPhoto)
         } else {
-            transitionDelegate.transitionAnimator.endingView = nil
+            photoTransitionDelegate.transitionAnimator.endingView = nil
         }
 
         let overlayWasHiddenBeforeTransition = overlayView?.isHidden ?? false
@@ -195,24 +191,39 @@ public class PhotosViewController: UIViewController, UIPageViewControllerDataSou
 // MARK: - Private Function
 
 extension PhotosViewController {
-    private func initialSetupWithInitialPhoto(_ initialPhoto: PhotoViewable? = nil) {
-        setupPageViewControllerWithInitialPhoto(initialPhoto)
-        modalPresentationStyle = .custom
-        transitioningDelegate = transitionDelegate
-        modalPresentationCapturesStatusBarAppearance = true
+    private func initialSetupWith(_ initialPhoto: PhotoViewable? = nil, _ referenceView: UIView? = nil) {
+        if let photo = initialPhoto, dataSource.containsPhoto(photo) {
+            setUpPageViewController(photo)
+            setUpTransition(startingView: referenceView, startingPhoto: photo)
+            
+        } else if let photo = dataSource.photos.first {
+            setUpPageViewController(photo)
+            setUpTransition(startingView: referenceView, startingPhoto: photo)
+        }
     }
     
-    private func setupPageViewControllerWithInitialPhoto(_ initialPhoto: PhotoViewable? = nil) {
+    private func setUpPageViewController(_ photo: PhotoViewable) {
         pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 16.0])
         pageViewController.view.backgroundColor = UIColor.clear
         pageViewController.delegate = self
         pageViewController.dataSource = self
+        let photoViewController = initializePhotoViewControllerForPhoto(photo)
+        pageViewController.setViewControllers([photoViewController], direction: .forward, animated: false, completion: nil)
         
-        if let photo = initialPhoto , dataSource.containsPhoto(photo) {
-            changeToPhoto(photo, animated: false)
-        } else if let photo = dataSource.photos.first {
-            changeToPhoto(photo, animated: false)
-        }
+        photo.loadThumbnailImageWithCompletionHandler({ [weak self] (image, _) in
+            self?.addBlurBackgroundImage(image)
+        })
+        
+        updateCurrentPhotosInformation()
+    }
+    
+    private func setUpTransition(startingView: UIView?, startingPhoto: PhotoViewable?) {
+        photoTransitionDelegate.transitionAnimator.startingView = startingView
+        photoTransitionDelegate.transitionAnimator.photo = startingPhoto
+        photoTransitionDelegate.transitionAnimator.endingView = currentPhotoViewController?.scalingImageView.imageView
+        self.modalPresentationStyle = .custom
+        self.transitioningDelegate = photoTransitionDelegate
+        self.modalPresentationCapturesStatusBarAppearance = true
     }
     
     private func setupOverlayView() {
@@ -228,19 +239,10 @@ extension PhotosViewController {
         overlayView.setHidden(true, animated: false)
     }
     
-    
-    
     private func updateCurrentPhotosInformation() {
         if let currentPhoto = currentPhoto {
             overlayView?.populateWithPhoto(currentPhoto)
-        }
-    }
-    
-    private func addBlurBackground() {
-        if let photo = dataSource.photoAtIndex(0) {
-            photo.loadThumbnailImageWithCompletionHandler({ [weak self] (image, _) in
-                self?.addBlurBackgroundImage(image)
-            })
+            backgroundImageView.image = currentPhoto.image
         }
     }
     
@@ -271,19 +273,17 @@ extension PhotosViewController {
         }
         return photoViewController
     }
-}
-
-
-// MARK: - Public Function
-
-extension PhotosViewController {
-    func changeToPhoto(_ photo: PhotoViewable, animated: Bool) {
-        if !dataSource.containsPhoto(photo) {
-            return
-        }
-        let photoViewController = initializePhotoViewControllerForPhoto(photo)
-        pageViewController.setViewControllers([photoViewController], direction: .forward, animated: animated, completion: nil)
-        updateCurrentPhotosInformation()
+    
+    func addBlurBackgroundImage(_ image: UIImage?) {
+        backgroundImageView.frame = view.bounds
+        backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundImageView.image = image
+        backgroundImageView.contentMode = .scaleAspectFill
+        let blurContentView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        blurContentView.frame = backgroundImageView.bounds
+        blurContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(backgroundImageView, at: 0)
+        backgroundImageView.addSubview(blurContentView)
     }
 }
 
@@ -293,11 +293,11 @@ extension PhotosViewController {
 extension PhotosViewController {
     @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         if gestureRecognizer.state == .began {
-            transitionDelegate.interactiveDismissal = true
+            photoTransitionDelegate.interactiveDismissal = true
             dismiss(animated: true, completion: nil)
         } else {
-            transitionDelegate.interactiveDismissal = gestureRecognizer.state != .ended
-            transitionDelegate.interactiveAnimator.handlePanWithPanGestureRecognizer(gestureRecognizer, viewToPan: pageViewController.view, anchorPoint: CGPoint(x: view.bounds.midX, y: view.bounds.midY))
+            photoTransitionDelegate.interactiveDismissal = gestureRecognizer.state != .ended
+            photoTransitionDelegate.interactiveAnimator.handlePanWithPanGestureRecognizer(gestureRecognizer, viewToPan: pageViewController.view, anchorPoint: CGPoint(x: view.bounds.midX, y: view.bounds.midY))
         }
     }
     
@@ -336,31 +336,5 @@ extension PhotosViewController {
                 navigateToPhotoHandler?(currentPhotoViewController.photo)
             }
         }
-    }
-}
-
-
-// MARK: - ImageBlurable
-
-protocol ImageBlurable {
-    func addBlurBackgroundImage(_ image: UIImage?)
-}
-
-extension ImageBlurable where Self: UIViewController {
-    func addBlurBackgroundImage(_ image: UIImage?) {
-        let backgroundImageView = UIImageView(frame: view.bounds)
-        backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        backgroundImageView.image = image
-        backgroundImageView.contentMode = .scaleAspectFill
-        let blurContentView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        blurContentView.frame = backgroundImageView.bounds
-        blurContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.insertSubview(backgroundImageView, at: 0)
-        backgroundImageView.addSubview(blurContentView)
-
-        let maskView = UIView(frame: CGRect(origin: CGPoint.zero, size: view.bounds.size))
-        maskView.backgroundColor = UIColor(white: 0, alpha: 0.3)
-        maskView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.insertSubview(maskView, aboveSubview: backgroundImageView)
     }
 }
