@@ -26,18 +26,12 @@ class ImageContainerView: UIView {
         feedModel = feed
         let medias = feed.medias
         var containerHeight: CGFloat = 0
-        let multiPhotoWidth: CGFloat = 160
-        let multiPhotoMargin: CGFloat = 6 
-        let multiPhotoMinHeight: CGFloat = ceil((minHeight - multiPhotoMargin) / 2)
         subviews.forEach { $0.removeFromSuperview() }
         imageViews.removeAll()
         
         containerHeight = minHeight
         for (i, media) in medias.enumerated() {
             if URL(string: media.thumbnail) != nil {
-//                if i == 4 {
-//                    break
-//                }
                 if isLongPhoto(media) {
                     let longView = TVLongImageView()
                     longView.tag = i
@@ -61,42 +55,7 @@ class ImageContainerView: UIView {
         
         var rects: [CGRect] = []
         
-//        switch subviews.count {
-//        case 1:
-//            let width: CGFloat = CGFloat(medias.first?.thumbWidth ?? 0)
-//            let height: CGFloat = CGFloat(medias.first?.thumbHeight ?? 0)
-//            var containerWidth: CGFloat = 0
-//            if width > 0 && height > 0 {
-//
-//                if width > height {
-//                    containerWidth = maxWidth
-//                    containerHeight = minHeight
-//                } else if width == height {
-//                    containerWidth = minHeight
-//                    containerHeight = minHeight
-//                } else {
-//                    containerWidth = minWidth
-//                    containerHeight = maxHeight
-//                }
-//            }
-//            rects.append(CGRect(x: 0, y: 0, width: containerWidth, height: containerHeight))
-//        case 2:
-//            rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: minHeight))
-//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: minHeight))
-//        case 3:
-//            rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: minHeight))
-//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
-//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
-//        case 4:
-//            rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
-//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
-//            rects.append(CGRect(x: 0, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
-//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
-//        default:
-//            break
-//        }
-        
-        rects = getRectsInGroupIcon(wh: 326, hh: containerHeight, count: subviews.count)
+        rects = getRectsInGroup(wh: 326, hh: containerHeight, count: subviews.count)
         
         var idx: Int = 0
         for v in subviews {
@@ -227,7 +186,7 @@ class TVLongImageView: UIView {
 }
 
 extension ImageContainerView {
-    func getRectsInGroupIcon(wh: CGFloat, hh: CGFloat, count: Int) -> [CGRect] {
+    func getRectsInGroup(wh: CGFloat, hh: CGFloat, count: Int) -> [CGRect] {
         if count == 1 {
             return [CGRect(x: 0, y: 0, width: wh, height: hh)]
         }
