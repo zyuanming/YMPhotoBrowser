@@ -31,115 +31,86 @@ class ImageContainerView: UIView {
         let multiPhotoMinHeight: CGFloat = ceil((minHeight - multiPhotoMargin) / 2)
         subviews.forEach { $0.removeFromSuperview() }
         imageViews.removeAll()
-        if medias.count > 0 {
-            containerHeight = minHeight
-            for (i, media) in medias.enumerated() {
-                if URL(string: media.thumbnail) != nil {
-                    if i == 4 {
-                        break
-                    }
-
-                    if isLongPhoto(media) {
-                        let longView = TVLongImageView()
-                        longView.tag = i
-                        imageViews.append(longView)
-                        addSubview(longView)
-                        self.addPreviewAction(forView: longView)
-                        longView.setImage(with: media.mediaUrl)
-                    } else {
-                        let imageView = UIImageView()
-                        imageView.backgroundColor = UIColor.lightText
-                        imageView.contentMode = .scaleAspectFill
-                        imageView.clipsToBounds = true
-                        imageView.tag = i
-                        addSubview(imageView)
-                        imageViews.append(imageView)
-                        self.addPreviewAction(forView: imageView)
-                        imageView.kf.setImage(with: URL(string: media.mediaUrl))
-                    }
-                }
-            }
-
-            var rects: [CGRect] = []
-
-            switch subviews.count {
-            case 1:
-                let width: CGFloat = CGFloat(medias.first?.thumbWidth ?? 0)
-                let height: CGFloat = CGFloat(medias.first?.thumbHeight ?? 0)
-                var containerWidth: CGFloat = 0
-                if width > 0 && height > 0 {
-
-                    if width > height {
-                        containerWidth = maxWidth
-                        containerHeight = minHeight
-                    } else if width == height {
-                        containerWidth = minHeight
-                        containerHeight = minHeight
-                    } else {
-                        containerWidth = minWidth
-                        containerHeight = maxHeight
-                    }
-                }
-                rects.append(CGRect(x: 0, y: 0, width: containerWidth, height: containerHeight))
-            case 2:
-                rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: minHeight))
-                rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: minHeight))
-            case 3:
-                rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: minHeight))
-                rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
-                rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
-            case 4:
-                rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
-                rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
-                rects.append(CGRect(x: 0, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
-                rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
-            default:
-                break
-            }
-            var idx: Int = 0
-            for v in subviews {
-                if idx >= rects.count {
-                    break
-                }
-                v.frame = rects[idx]
-                idx += 1
-            }
-
-
-            if rects.count == 4 {
-                for (index, subview) in subviews.enumerated() {
-                    let dotImageView = UIImageView()
-                    dotImageView.image = UIImage(named: "photo_\(index + 1)")
-                    subview.addSubview(dotImageView)
-
-                    if index == 0 {
-                        dotImageView.snp.makeConstraints({ (make) in
-                            make.bottom.equalToSuperview().offset(-4 )
-                            make.right.equalToSuperview().offset(-4 )
-                        })
-                    } else if index == 1 {
-                        dotImageView.snp.makeConstraints({ (make) in
-                            make.bottom.equalToSuperview().offset(-4 )
-                            make.left.equalToSuperview().offset(4 )
-                        })
-                    } else if index == 2 {
-                        dotImageView.snp.makeConstraints({ (make) in
-                            make.top.equalToSuperview().offset(4 )
-                            make.right.equalToSuperview().offset(-4 )
-                        })
-                    } else if index == 3 {
-                        dotImageView.snp.makeConstraints({ (make) in
-                            make.top.equalToSuperview().offset(4 )
-                            make.left.equalToSuperview().offset(4 )
-                        })
-                    }
+        
+        containerHeight = minHeight
+        for (i, media) in medias.enumerated() {
+            if URL(string: media.thumbnail) != nil {
+//                if i == 4 {
+//                    break
+//                }
+                if isLongPhoto(media) {
+                    let longView = TVLongImageView()
+                    longView.tag = i
+                    imageViews.append(longView)
+                    addSubview(longView)
+                    self.addPreviewAction(forView: longView)
+                    longView.setImage(with: media.mediaUrl)
+                } else {
+                    let imageView = UIImageView()
+                    imageView.backgroundColor = UIColor.lightText
+                    imageView.contentMode = .scaleAspectFill
+                    imageView.clipsToBounds = true
+                    imageView.tag = i
+                    addSubview(imageView)
+                    imageViews.append(imageView)
+                    self.addPreviewAction(forView: imageView)
+                    imageView.kf.setImage(with: URL(string: media.mediaUrl))
                 }
             }
         }
+        
+        var rects: [CGRect] = []
+        
+//        switch subviews.count {
+//        case 1:
+//            let width: CGFloat = CGFloat(medias.first?.thumbWidth ?? 0)
+//            let height: CGFloat = CGFloat(medias.first?.thumbHeight ?? 0)
+//            var containerWidth: CGFloat = 0
+//            if width > 0 && height > 0 {
+//
+//                if width > height {
+//                    containerWidth = maxWidth
+//                    containerHeight = minHeight
+//                } else if width == height {
+//                    containerWidth = minHeight
+//                    containerHeight = minHeight
+//                } else {
+//                    containerWidth = minWidth
+//                    containerHeight = maxHeight
+//                }
+//            }
+//            rects.append(CGRect(x: 0, y: 0, width: containerWidth, height: containerHeight))
+//        case 2:
+//            rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: minHeight))
+//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: minHeight))
+//        case 3:
+//            rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: minHeight))
+//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
+//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
+//        case 4:
+//            rects.append(CGRect(x: 0, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
+//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: 0, width: multiPhotoWidth, height: multiPhotoMinHeight))
+//            rects.append(CGRect(x: 0, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
+//            rects.append(CGRect(x: multiPhotoWidth + multiPhotoMargin, y: multiPhotoMinHeight + multiPhotoMargin, width: multiPhotoWidth, height: multiPhotoMinHeight))
+//        default:
+//            break
+//        }
+        
+        rects = getRectsInGroupIcon(wh: 326, hh: containerHeight, count: subviews.count)
+        
+        var idx: Int = 0
+        for v in subviews {
+            if idx >= rects.count {
+                break
+            }
+            v.frame = rects[idx]
+            idx += 1
+        }
 
-        self.containerHeight = containerHeight
-        self.invalidateIntrinsicContentSize()
-
+        if let last = rects.last {
+            self.containerHeight = last.maxY + 10
+            self.invalidateIntrinsicContentSize()
+        }
     }
 
     private func addPreviewAction(forView view: UIView) {
@@ -252,6 +223,33 @@ class TVLongImageView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension ImageContainerView {
+    func getRectsInGroupIcon(wh: CGFloat, hh: CGFloat, count: Int) -> [CGRect] {
+        if count == 1 {
+            return [CGRect(x: 0, y: 0, width: wh, height: hh)]
+        }
+
+        var array = [CGRect]()
+        let padding: CGFloat = 5
+        let cellWH: CGFloat = (wh - padding * 4) / 3
+        let cellCount: Int = count > 9 ? 9 : count
+        
+        let rowCount = Int(sqrt(Double(cellCount)))
+        for i in 0..<cellCount {
+            //当前行
+            let row = i % rowCount
+            //当前列
+            let column = i / rowCount
+            let rect = CGRect(x: padding*CGFloat(column+1) + cellWH*CGFloat(column),
+                              y: padding*CGFloat(row+1) + cellWH*CGFloat(row),
+                              width: cellWH, height: cellWH)
+            array.append(rect)
+        }
+
+        return array
     }
 }
 
