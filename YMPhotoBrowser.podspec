@@ -10,5 +10,5 @@ Pod::Spec.new do |s|
   s.source         = { :git => "https://github.com/zyuanming/YMPhotoBrowser.git", :tag => "#{s.version}" }
   s.source_files   = "YMPhotoBrowser/*"
   s.resource_bundles = { 'Image' => ['YMPhotoBrowser/Resources/*.png']}
-  s.dependency 'Kingfisher', '~> 4.5.0'
+  s.dependency 'Kingfisher', '~> 4.7.0'
 end

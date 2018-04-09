@@ -126,7 +126,6 @@
 				6045B2AC1EB215650069D6B4 /* Frameworks */,
 				6045B2AD1EB215650069D6B4 /* Resources */,
 				BB773FB91B3847740AD823BC /* [CP] Embed Pods Frameworks */,
-				C1D233271434244EBB5D727C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -225,21 +224,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C1D233271434244EBB5D727C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YMPhotoBrowser_Demo/Pods-YMPhotoBrowser_Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
