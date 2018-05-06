@@ -5,7 +5,7 @@ import UIKit
 public typealias PhotosViewControllerReferenceViewHandler = (_ photo: PhotoViewable) -> (UIView?)
 public typealias PhotosViewControllerNavigateToPhotoHandler = (_ photo: PhotoViewable) -> ()
 public typealias PhotosViewControllerDismissHandler = (_ viewController: PhotosViewController) -> ()
-public typealias PhotosViewControllerLongPressHandler = (_ photo: PhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> (Bool)
+public typealias PhotosViewControllerLongPressHandler = (_ photo: PhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> ()
 
 
 public class PhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
@@ -252,26 +252,8 @@ extension PhotosViewController {
         let photoViewController = PhotoViewController(photo: photo)
         singleTapGestureRecognizer.require(toFail: photoViewController.doubleTapGestureRecognizer)
         photoViewController.longPressGestureHandler = { [weak self] gesture in
-            guard let weakSelf = self else {
-                return
-            }
-            weakSelf.shouldHandleLongPressGesture = false
-            
-            if let gestureHandler = weakSelf.longPressGestureHandler {
-                weakSelf.shouldHandleLongPressGesture = gestureHandler(photo, gesture)
-            }
-            weakSelf.shouldHandleLongPressGesture = !weakSelf.shouldHandleLongPressGesture
-            
-            if weakSelf.shouldHandleLongPressGesture {
-                guard let view = gesture.view else {
-                    return
-                }
-                let menuController = UIMenuController.shared
-                var targetRect = CGRect.zero
-                targetRect.origin = gesture.location(in: view)
-                menuController.setTargetRect(targetRect, in: view)
-                menuController.setMenuVisible(true, animated: true)
-            }
+            guard let longPressGestureHandler = self?.longPressGestureHandler else { return }
+            longPressGestureHandler(photo, gesture)
         }
         return photoViewController
     }

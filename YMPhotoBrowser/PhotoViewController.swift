@@ -48,7 +48,6 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         scalingImageView.delegate = self
         scalingImageView.frame = view.bounds
         scalingImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        scalingImageView.imageView.enableLongPressToSave()
         view.addSubview(scalingImageView)
         
         view.addSubview(activityIndicator)
